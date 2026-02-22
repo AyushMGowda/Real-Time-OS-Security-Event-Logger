@@ -1,97 +1,70 @@
-# Real-Time Security OS Event Logger
+# Real-Time Host-Based Intrusion Detection System (HIDS)
 
-A Python-based security event monitoring tool with a minimalist GUI that tracks system processes and resource usage in real-time. The application provides alerts for suspicious activities and high resource usage, making it useful for system administrators and security professionals.
+A Python-based real-time security monitoring system with a modern GUI that detects suspicious process behavior, brute-force login attempts, and anomalous system activity on Windows.
 
-## Features
+This project combines process monitoring, Windows Security Event Log analysis, and behavioral detection logic to simulate a lightweight Host-Based Intrusion Detection System (HIDS).
 
-- 🔍 Real-time monitoring of system processes
-- 📊 System resource usage tracking (CPU & Memory)
-- 🚨 Anomaly detection for high CPU usage
-- 🌓 Dark-themed minimalist GUI
-- 🔍 Event filtering capabilities
-- 📁 Export logs to CSV format
-- 🔄 Automatic process history tracking
+---
 
-## Requirements
+## 🚀 Features
 
-- Python 3.8 or higher
-- psutil library
-- tkinter (usually comes with Python)
+### 🔎 Process Monitoring Engine
+- Real-time tracking of all running processes
+- Process creation detection
+- Sustained high CPU anomaly detection
+- Per-process alert suppression (cooldown logic)
 
-## Installation
+### 🛡 Suspicious Process Detection
+- Detects execution of high-risk binaries:
+  - `cmd.exe` → MITRE T1059 (Command Execution)
+  - `powershell.exe` → MITRE T1059
+  - `wmic.exe` → MITRE T1047
+  - `rundll32.exe` → MITRE T1218
+- MITRE ATT&CK technique mapping included in alerts
 
-1. Clone the repository:
-```bash
-git clone https://github.com/udayaryan0001/Real-time-Security-OS-event-logger.git
-cd Real-time-Security-OS-event-logger
-```
+### 🔐 Brute-Force Attack Detection
+- Monitors Windows Security Log (Event ID 4625)
+- Detects multiple failed logins within 2-minute window
+- Flags possible brute-force attacks
+- Escalates to CRITICAL if login succeeds after failures
+- Stateful event tracking (no duplicate reprocessing)
 
-2. Create a virtual environment (recommended):
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### 📊 Resource Anomaly Detection
+- System-wide CPU and Memory threshold monitoring
+- Threshold-based alerting
+- State-aware recovery detection
 
-3. Install required packages:
-```bash
-pip install -r requirements.txt
-```
+### 🎛 Modern Security Dashboard
+- Real-time severity counters (INFO / MEDIUM / HIGH / CRITICAL)
+- Dark-themed security console UI
+- Event filtering:
+  - All Events
+  - Process Events
+  - Resource Usage
+  - Security Alerts
+- Color-coded severity logging
 
-## Usage
+### 📁 Log Management
+- Structured logging (timestamp, severity, category)
+- CSV export support
+- Log clearing and reset functionality
 
-1. Run the application:
-```bash
-python security_logger.py
-```
+---
 
-2. The application window will appear with the following features:
-   - Filter dropdown to view specific types of events
-   - Export button to save logs as CSV
-   - Clear button to reset the log display
-   - Real-time log display area
-   - Status bar showing current state
+## 🧠 Detection Techniques Used
 
-3. The application automatically monitors:
-   - Process CPU and memory usage
-   - System-wide resource utilization
-   - Anomalous process behavior
+- Sliding time-window correlation (brute-force detection)
+- Stateful Windows Event Log tracking (RecordNumber-based)
+- Alert suppression (cooldown logic)
+- Behavioral process detection
+- MITRE ATT&CK mapping for attack classification
 
-4. Use the filter dropdown to view:
-   - All Events
-   - Process Events
-   - Resource Usage
-   - Security Alerts
+---
 
-5. Export logs to CSV for further analysis
+## 🛠 Requirements
 
-## Security Features
+- Python 3.8+
+- Windows OS
+- Administrative privileges (required for Security Log access)
 
-- Monitors CPU and memory usage of all processes
-- Detects high CPU usage anomalies (threshold at 80%)
-- Tracks system resource usage
-- Logs security-relevant events with timestamps
-- Process history tracking for pattern recognition
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Built with Python and tkinter
-- Uses psutil for system monitoring
-- Dark theme for reduced eye strain
-- Detects unusual process behavior
-- Logs security-relevant system events
-- Provides real-time alerts for suspicious activities
-
-## Note
-Some features may require administrative privileges to access system information.
+### Dependencies
